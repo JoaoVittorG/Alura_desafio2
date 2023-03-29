@@ -1,18 +1,8 @@
-## Getting Started
+Nesse projeto foi desenvolvido com API do imdb, pegamos os top 250 filmes do imdb, tratamos eles e exibimos as informações na tela.
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+Contem 3 classes
+classe JsonParser para pegar os dados html da api e formatar eles em indetificadores e valores.
 
-## Folder Structure
+classe manipulaArquivo para ler o link do arquivo que foi salvo de forma externa em um txt que acompanha a aplicação.
 
-The workspace contains two folders by default, where:
-
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
-
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
-
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+classe app (main) onde é chamado os metodos para conexão com o HTTP, e exibição dos dados na tela

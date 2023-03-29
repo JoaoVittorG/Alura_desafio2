@@ -8,27 +8,30 @@ import java.util.Map;
 
 public class App {
 
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String RESET = "\033[0m";  // Text Reset
+    public static final String reset = "\u001B[0m";
+
     public static final String BLACK_BOLD = "\033[1;30m";
-    public static final String ANSI_BLACK = "\u001B[30m";
+    public static final String textoVerde = "\u001B[32m";
+    public static final String textoAmarelo = "\u001B[33m";
+    public static final String textoPreto = "\u001B[30m";
     public static final String BLACK_BOLD_BRIGHT = "\033[1;90m";
-    public static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
+    public static final String fundoAmarelo = "\u001B[43m";
     public static final String BLACK_UNDERLINED = "\033[4;30m";
+    public static final String GREEN_BOLD = "\033[1;32m";
     /**
      * @param args
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
         // Fazer uma conexao HTTP e buscar os top 250 filmes parte1
-        // extrair sÃ³ os dados que interessam (tÃ­tulo, poster, classificaÃ§Ã£o) parte2
+        // extrair os dados que interessam (ti­tulo, poster, classificacao) parte2
         // exibir e manipular os dados parte3
 
         //parte1
         String url = "";
 
-        String localURL = "url.txt";
-        url = manipulaArquivo.leitor(localURL);
+        String localURL = "url.txt"; //string com o local do arquivo que armazena o link do imdb
+        url = manipulaArquivo.leitor(localURL); //metodo para ler o arquivo e retornar o que estiver escrito
         URI endereco = URI.create(url);
         HttpClient cliente = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder(endereco).GET().build();
@@ -39,14 +42,21 @@ public class App {
         JsonParser parser = new JsonParser();
         List<Map<String, String>> listaDeFilmes = parser.parse(body); 
         
-        //System.out.println(ANSI_RESET +"teste" );
         //parte3
-        String estrela = "?";
-        System.out.println(estrela);
+        String estrelas = "";
+        int qtdeEstrelas = 0;
+
+
         for (Map<String,String> filme : listaDeFilmes) {
-            System.out.println(BLACK_UNDERLINED + ANSI_YELLOW_BACKGROUND  + filme.get("title") + RESET);
+            System.out.print(textoVerde +"Filme: " + reset);
+            System.out.println(textoPreto + fundoAmarelo  + filme.get("title") + reset);
+            System.out.print(textoVerde + "Capa: " + reset);
             System.out.println(filme.get("image"));
-            System.out.println(filme.get("imDbRating") + estrela);
+            qtdeEstrelas = (int)Float.parseFloat(filme.get("imDbRating"));
+            System.out.print(textoVerde + "Nota: " + reset);
+            System.out.print(qtdeEstrelas + " ");
+            estrelas = retornaEstrelas(qtdeEstrelas);
+            System.out.println(textoAmarelo + estrelas + reset);            
             System.out.println();
         }
 
@@ -54,5 +64,14 @@ public class App {
     
     }
 
+    public static String retornaEstrelas(int qtde){
+        String estrelas = "";
+        String caracter = "*";
 
+        for (int x = 0; x < qtde; x++) {
+            estrelas = estrelas + caracter;
+        }
+
+        return estrelas;
+    }
 }
