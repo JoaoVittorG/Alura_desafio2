@@ -1,4 +1,6 @@
+import java.io.InputStream;
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -27,7 +29,7 @@ public class App {
         // extrair os dados que interessam (ti­tulo, poster, classificacao) parte2
         // exibir e manipular os dados parte3
 
-        //parte1
+        //parte1 ********************************************
         String url = "";
 
         String localURL = "url.txt"; //string com o local do arquivo que armazena o link do imdb
@@ -38,33 +40,43 @@ public class App {
         HttpResponse<String> response = cliente.send(request, BodyHandlers.ofString());
         String body = response.body();
 
-        //parte2
+        //parte2*******************************************************
         JsonParser parser = new JsonParser();
         List<Map<String, String>> listaDeFilmes = parser.parse(body); 
         
-        //parte3
+        //parte3******************************************************
         String estrelas = "";
-        int qtdeEstrelas = 0;
+        int notaFilme = 0;
+        String tituloFilme = "";
+        String capaFilme = "";
+        GeradoraDeFigurinhas geradora = new GeradoraDeFigurinhas();
+        InputStream imagem;
+
 
 
         for (Map<String,String> filme : listaDeFilmes) {
+            tituloFilme = filme.get("title");
+            capaFilme = filme.get("image");
+            notaFilme = (int)Float.parseFloat(filme.get("imDbRating"));
+
             System.out.print(textoVerde +"Filme: " + reset);
-            System.out.println(textoPreto + fundoAmarelo  + filme.get("title") + reset);
+            System.out.println(textoPreto + fundoAmarelo  + tituloFilme + reset);
             System.out.print(textoVerde + "Capa: " + reset);
-            System.out.println(filme.get("image"));
-            qtdeEstrelas = (int)Float.parseFloat(filme.get("imDbRating"));
+            System.out.println(capaFilme);
             System.out.print(textoVerde + "Nota: " + reset);
-            System.out.print(qtdeEstrelas + " ");
-            estrelas = retornaEstrelas(qtdeEstrelas);
+            System.out.print(notaFilme + " ");
+            estrelas = retornaQtdeEstrelas(notaFilme);
             System.out.println(textoAmarelo + estrelas + reset);            
             System.out.println();
+            imagem = new URL(capaFilme).openStream();
+            geradora.cria(imagem, tituloFilme.replace(":", "-") + ".png", notaFilme);
         }
 
     
     
     }
 
-    public static String retornaEstrelas(int qtde){
+    public static String retornaQtdeEstrelas(int qtde){
         String estrelas = "";
         String caracter = "*";
 
